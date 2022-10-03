@@ -1,0 +1,11 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:4.4.14-focal
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER:?err}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:?err}
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongodb:/data/db
