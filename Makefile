@@ -2,7 +2,7 @@ all: cvat mongodb mlflow
 
 cvat:
 	@echo "Starting up CVAT"
-	docker compose -f cvat/docker-compose.yml up -d
+	docker compose -f docker-compose.cvat.yml up -d
 
 mongodb:
 	@echo "Starting up MongoDB"
