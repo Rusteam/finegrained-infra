@@ -16,7 +16,7 @@ include .env
 
 sync:
 	@echo "Syncing files to the cloud"
-	rsync -avP cvat mlflow docker-compose.mongodb.yml Makefile .env $(CLOUD):~/
+	rsync -avP mlflow docker-compose.mongodb.yml docker-compose.cvat.yml Makefile .env $(CLOUD):~/
 
 run:
 	@echo "Logging in and starting up services"
