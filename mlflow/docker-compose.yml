@@ -1,0 +1,34 @@
+services:
+  mlflow:
+    build: .
+    image: finegrained/mlflow:0.1
+    container_name: fg-mlflow
+    restart: always
+    ports:
+      - 5100:5000
+    environment:
+      PG_HOST: mlflow_db
+      PG_USER: ${MLFLOW_POSTGRES_USER:?err}
+      PG_PASSWORD: ${MLFLOW_POSTGRES_PASSWORD:?err}
+      DEFAULT_ARTIFACT_ROOT: ${MLFLOW_DEFAULT_ARTIFACT_ROOT:?err}
+      MLFLOW_S3_ENDPOINT_URL: ${MLFLOW_S3_ENDPOINT_URL:?err}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:?err}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:?err}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?err}
+    depends_on:
+      - mlflow_db
+
+  mlflow_db:
+    image: postgres:14-bullseye
+    container_name: fg-mlflow-db
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - mlflow_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+
+
+volumes:
+  mlflow_db:
