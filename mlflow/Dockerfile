@@ -1,6 +1,6 @@
 FROM python:3.10.6-slim-bullseye
 
-RUN pip install --no-cache mlflow==1.29.0 psycopg2-binary==2.9.3
+RUN pip install --no-cache mlflow==1.29.0 psycopg2-binary==2.9.3 boto3==1.24.66
 
 CMD mlflow server \
       --host 0.0.0.0 \

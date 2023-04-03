@@ -12,6 +12,10 @@ mlflow:
 	@echo "Starting up MLflow"
 	DOCKER_DEFAULT_PLATFORM=linux/amd64 docker compose -f mlflow/docker-compose.yml --env-file mlflow/.env up -d
 
+mlflow_build:
+	@echo "Starting up MLflow"
+	DOCKER_DEFAULT_PLATFORM=linux/amd64 docker compose -f mlflow/docker-compose.yml --env-file mlflow/.env up -d --build
+
 include .env
 
 sync:
