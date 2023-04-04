@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  https:
+    image: steveltn/https-portal:1
+    container_name: fg-https-portal
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      STAGE: local
+      DOMAINS: >-
+        cvat.${DOMAIN} => http://${CVAT_HOST}:8080,
+        ${BASIC_USER}:${BASIC_PASSWORD}@mlflow.${DOMAIN} -> http://mlflow:5000,
+      ERROR_LOG: stdout
+      ACCESS_LOG: stdout
+      WEBSOCKET: "true"
+    volumes:
+      - ./data/https-portal:/var/lib/https-portal
+    networks:
+      - cvat
+      - mlflow
+    depends_on:
+      - traefik
+      - mlflow

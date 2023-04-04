@@ -1,6 +1,6 @@
 services:
   mlflow:
-    build: .
+    build: ./mlflow
     image: finegrained/mlflow:0.1
     container_name: fg-mlflow
     restart: always
@@ -17,6 +17,8 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:?err}
     depends_on:
       - mlflow_db
+    networks:
+      - mlflow
 
   mlflow_db:
     image: postgres:14-bullseye
@@ -25,10 +27,13 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - mlflow_db:/var/lib/postgresql/data
+      - ./data/mlflow_postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+      POSTGRES_USER: ${MLFLOW_POSTGRES_USER:?err}
+      POSTGRES_PASSWORD: ${MLFLOW_POSTGRES_PASSWORD:?err}
+      POSTGRES_DB: mlflow
+    networks:
+      - mlflow
 
-
-volumes:
-  mlflow_db:
+networks:
+  mlflow:
