@@ -61,6 +61,6 @@ sync:
 				docker-compose.https.yml \
 				Makefile $(CLOUD):~/
 
-run:
+launch:
 	@echo "Logging in and starting up services"
 	ssh -t $(CLOUD) 'make'

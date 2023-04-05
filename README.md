@@ -15,8 +15,8 @@ Current deployment includes:
 - docker and docker-compose
 
 **Change environment variables:**
-1. Update mongodb and ssh connection (if deployed to an ssh server) inside `.env.example`. Rename it to `.env`.
-2. Update MLflow S3 connection and postgres details inside `mlflow/.env.example`. Rename it to `mlflow/.env`.
+1. Update all env variables inside `.env.example`.
+2. Rename it to `.env`.
 
 ### Run
 
@@ -24,17 +24,22 @@ Current deployment includes:
 
 **single service:** `make -B <service>`
 
-services: cvat, mongodb, mlflow.
+services: 
+- cvat
+- mongodb
+- mlflow
+- https-proxy - for https support and reverse proxy. 
+MLflow can be accessed at `https://mlflow.<domain_name>` and CVAT at `https://cvat.<domain_name>`.
+Domain name is defined in `.env` file.
 
-#### MLflow postgres setup
+**stream logs:** `make <service>_logs`
 
-To create a database for mlflow service in postgres run the following commands:
-1. Log in to postgres docker: `docker exec -it fg-mlflow-db bash`
-2. Log in to postgres db: `psql -U postgres -d postgres`
-3. Run SQL commands to create a db and a user:
-```sql
-create role <user> with password '<password>';
-create database <database>;
-grant all priviliges on database <database> to <user>;
-alter role <user> with login;
-```
+**stop all**: `make down`
+
+### To deploy on a remote server
+
+1. Make sure remote server connection is setup in `~/.ssh/config`.
+2. Provide remote server name in `.env` file.
+3. Upload built mlflow image to remote server: `make mlflow_upload`.
+4. Upload files on the remote server `make sync`.
+5. Either log in to the server and run `make` or run `make launch` locally.
